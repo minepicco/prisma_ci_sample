@@ -245,4 +245,4 @@
       "Value": {"Fn::GetAtt": ["ConfigRuleForVolumeAutoEnableIO", "Compliance.Type"]}
     }
   }
-}
+}
