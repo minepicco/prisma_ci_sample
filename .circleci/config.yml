@@ -7,24 +7,12 @@ jobs:
       - setup_remote_docker:   # (2)
           docker_layer_caching: true # (3)
       - run:
-          name: GET Dockerfile 
-          command: wget https://raw.githubusercontent.com/minepicco/speechtotext-dockerfile/master/Dockerfile -O Dockerfile
+          name: GET CloudFormation template
+          command: wget https://raw.githubusercontent.com/minepicco/prisma_ci_sample/master/0_high_alert.template -O demo.template
       - run:
-          name: docker ps
-          command: docker ps -a
-
+          name: GET audit result
+          command: result=`curl --data-binary @demo.template -X POST https://scanapi.redlock.io/v1/iac | jq .result.severity_stats.high`
       - run:
-          name: build
-          command: docker build -t minepicco/test:1.0 .
-  test:
-    docker:
-      - image: circleci/build-image
-    steps:
-      - run:
-          name: docker login
-          command: docker login -u $username -p $password -e $mailaddress
-     
-      - run:
-          name: docker push
-          command: docker push minepicco/test:1.0
+          name: Determine result
+          command: if [ $result != "0" ]; then; echo "You have "$result" high alert(s)."; curl --data-binary @temp.template -X POST https://scanapi.redlock.io/v1/iac | jq  '.result.rules_matched[] | select(.severity == "high")| .name' && exit 1; else; echo "No high alert was detected"; fi;
           
