@@ -15,8 +15,5 @@ jobs:
           command: wget https://raw.githubusercontent.com/minepicco/prisma_ci_sample/master/1_high_alert.template -O demo.template
       - run:
           name: GET audit result
-          command: result=`curl --data-binary @demo.template -X POST https://scanapi.redlock.io/v1/iac | jq .result.severity_stats.high` && echo $result
-      - run:
-          name: Determine result
-          command: echo $result && if [ $result -gt 0 ]; then echo "You have "$result" high alert(s)."&& curl --data-binary @demo.template -X POST https://scanapi.redlock.io/v1/iac | jq  '.result.rules_matched[] | select(.severity == "high")| .name' && exit 1; else echo "No high alert was detected"; fi;
+          command: result=`curl --data-binary @demo.template -X POST https://scanapi.redlock.io/v1/iac | jq .result.severity_stats.high` && echo $result && if [ $result -gt 0 ]; then echo "You have "$result" high alert(s)."&& curl --data-binary @demo.template -X POST https://scanapi.redlock.io/v1/iac | jq  '.result.rules_matched[] | select(.severity == "high")| .name' && exit 1; else echo "No high alert was detected"; fi;
           
