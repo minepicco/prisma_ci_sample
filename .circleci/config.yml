@@ -2,10 +2,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php
+      - image: ubuntu:latest
     steps:
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: false
       - run:
           name: Prepare environment
           command: sudo apt-get update && sudo apt-get -y install jq
