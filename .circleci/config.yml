@@ -14,7 +14,7 @@ jobs:
           name: GET CloudFormation template
           #command: wget https://raw.githubusercontent.com/minepicco/prisma_ci_sample/master/0_high_alert.template -O demo.template
           command: wget https://raw.githubusercontent.com/minepicco/prisma_ci_sample/master/1_high_alert.template -O demo.template
-  build:
+  test:
     docker:
       - image: circleci/php
     steps:
