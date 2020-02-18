@@ -13,11 +13,13 @@ jobs:
       - run:
           name: GET CloudFormation template
           #command: wget https://raw.githubusercontent.com/minepicco/prisma_ci_sample/master/0_high_alert.template -O demo.template
-          command: wget https://raw.githubusercontent.com/minepicco/prisma_ci_sample/master/1_high_alert.template -O demo.template
+          #command: wget https://raw.githubusercontent.com/minepicco/prisma_ci_sample/master/1_high_alert.template -O demo.template
+          command: |
+             echo 1_high_alert.template
       - run:
           name: GET audit result
           command: |
-              curl --data-binary @demo.template -X POST https://scanapi.redlock.io/v1/iac > output.json
+              curl --data-binary 1_high_alert.template -X POST https://scanapi.redlock.io/v1/iac > output.json
               result=`cat output.json| jq .result.severity_stats.high`
               if [ $result -gt 0 ]; then 
                   echo "You have "$result" high alert(s).";
