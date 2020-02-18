@@ -4,6 +4,7 @@ jobs:
     docker:
       - image: circleci/php
     steps:
+      - checkout
       - setup_remote_docker:
           docker_layer_caching: false
       - run:
@@ -16,6 +17,8 @@ jobs:
   build:
     docker:
       - image: circleci/php
+    steps:
+      - checkout
       - run:
           name: GET audit result
           command: |
